@@ -43,21 +43,21 @@ typedef struct TV_HANDLE
 {
 	OggVorbis_File vorbisFile;
 
-	th_dec_ctx *theoraDecoder;				// Pointer to theora decorder
-	th_setup_info *theoraSetup;				// Pointer to setting of theora decorder for init
+	th_dec_ctx *theoraDecoder;          // Pointer to theora decorder
+	th_setup_info *theoraSetup;         // Pointer to setting of theora decorder for init
 	th_ycbcr_buffer ycbcrBuffer;
 
 	FILE *file;
 
-	ogg_sync_state oggSyncState;			// Input buffer control
-	ogg_page oggPage;						// 1 Page store
-	ogg_stream_state theoraStreamState;		// Stream state
+	ogg_sync_state oggSyncState;           // Input buffer control
+	ogg_page oggPage;                      // 1 Page store
+	ogg_stream_state theoraStreamState;    // Stream state
 	ogg_stream_state vorbisStreamState;
 
-	LPDIRECTSOUND				ds;
-	LPDIRECTSOUNDBUFFER dsBuffer;
-	LPDIRECT3DTEXTURE9		d3dTexture;
-	LPDIRECT3DDEVICE9		d3dDevice;
+	LPDIRECTSOUND           ds;
+	LPDIRECTSOUNDBUFFER     dsBuffer;
+	LPDIRECT3DTEXTURE9      d3dTexture;
+	LPDIRECT3DDEVICE9       d3dDevice;
 } TV_HANDLE;
 
 typedef TV_HANDLE *TV_AH;
