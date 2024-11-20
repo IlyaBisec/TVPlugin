@@ -1,7 +1,8 @@
 #include "TVPlugin.h"
 
+TV_HANDLE *tv_handle = NULL;
 
-int tv_Init()
+TVPLUGIN_API int tv_Init()
 {
     // TV_HANDLE
     tv_handle = (TV_HANDLE *)malloc(sizeof(TV_HANDLE));
@@ -37,7 +38,7 @@ int tv_Init()
 }
 
 
-int tv_Done()
+TVPLUGIN_API int tv_Done()
 {
     // Complete work DirectSound & Direct3D
     if (tv_handle)
@@ -53,7 +54,7 @@ int tv_Done()
 }
 
 
-TV_AH tv_StreamOpen(const char *pcszFileName)
+TVPLUGIN_API TV_AH tv_StreamOpen(const char *pcszFileName)
 {
     TV_AH handle = (TV_AH)malloc(sizeof(TV_HANDLE)); ;
     if (ov_fopen(pcszFileName, &handle->vorbisFile) < 0)
@@ -94,7 +95,7 @@ TV_AH tv_StreamOpen(const char *pcszFileName)
     return handle;
 }
 
-int tv_StreamLength(TV_AH tv_ah_handle)
+TVPLUGIN_API int tv_StreamLength(TV_AH tv_ah_handle)
 {
     return ov_time_total(&tv_ah_handle->vorbisFile, -1);
 
@@ -106,7 +107,7 @@ int tv_StreamLength(TV_AH tv_ah_handle)
     return (fileSize / ctx->vi.rate);*/
 }
 
-void tv_StreamPlay(TV_AH tv_ah_handle)
+TVPLUGIN_API void tv_StreamPlay(TV_AH tv_ah_handle)
 {
     // Read data from vorbisFile & write to DirectSound buffer
     vorbis_info *vi = ov_info(&tv_ah_handle->vorbisFile, -1);
@@ -138,7 +139,7 @@ void tv_StreamPlay(TV_AH tv_ah_handle)
 }
 
 
-void tv_StreamClose(TV_AH tv_ah_handle)
+TVPLUGIN_API void tv_StreamClose(TV_AH tv_ah_handle)
 {
     ov_clear(&tv_ah_handle->vorbisFile);
     if (tv_ah_handle->dsBuffer)
@@ -148,12 +149,12 @@ void tv_StreamClose(TV_AH tv_ah_handle)
     free(tv_ah_handle);
 }
 
-BYTE tv_StreamFinished(TV_AH tv_ah_handle)
+TVPLUGIN_API BYTE tv_StreamFinished(TV_AH tv_ah_handle)
 {
     return ov_time_tell(&tv_ah_handle->vorbisFile) >= ov_time_total(&tv_ah_handle->vorbisFile, -1);
 }
 
-void tv_StreamSetVolume(TV_AH tv_ah_handle, TV_VOLUME tv_volume)
+TVPLUGIN_API void tv_StreamSetVolume(TV_AH tv_ah_handle, TV_VOLUME tv_volume)
 {
     // Setting the volume of the audio stream
     if (tv_ah_handle->dsBuffer)
@@ -170,7 +171,7 @@ void tv_StreamSetVolume(TV_AH tv_ah_handle, TV_VOLUME tv_volume)
     }*/
 }
 
-TV_VH tv_VideoOpen(const char *pcszFileName)
+TVPLUGIN_API TV_VH tv_VideoOpen(const char *pcszFileName)
 {
     TV_VH handle = (TV_VH)malloc(sizeof(TV_HANDLE));
     handle->file = fopen(pcszFileName, "rb");
@@ -246,7 +247,7 @@ TV_VH tv_VideoOpen(const char *pcszFileName)
 }
 
 
-int tv_VideoClose(TV_VH tv_vh_handle)
+TVPLUGIN_API int tv_VideoClose(TV_VH tv_vh_handle)
 {
     fclose(tv_vh_handle->file);
     ogg_sync_clear(&tv_vh_handle->oggSyncState);
@@ -263,12 +264,12 @@ int tv_VideoClose(TV_VH tv_vh_handle)
     return TV_OK;
 }
 
-int tv_VideoFinished(TV_VH tv_vh_handle)
+TVPLUGIN_API int tv_VideoFinished(TV_VH tv_vh_handle)
 {
     return feof(tv_vh_handle->file) ? TV_OK : TV_FAIL;
 }
 
-void tv_VideoPlay(TV_VH tv_vh_handle, BOOL bLooped, RECT *pRect)
+TVPLUGIN_API void tv_VideoPlay(TV_VH tv_vh_handle, BOOL bLooped, RECT *pRect)
 {
     while (true)
     {
@@ -370,7 +371,7 @@ void tv_VideoPlay(TV_VH tv_vh_handle, BOOL bLooped, RECT *pRect)
     }
 }
 
-void tv_VideoResize(TV_VH tv_vh_handle, RECT *pRect)
+TVPLUGIN_API void tv_VideoResize(TV_VH tv_vh_handle, RECT *pRect)
 {
     if (pRect)
     {
